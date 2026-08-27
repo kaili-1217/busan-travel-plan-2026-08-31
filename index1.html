@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>釜山 5天4夜行程 · 8/31–9/4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+  :root{
+    --sea-mist:#EDF2EF;
+    --ink:#16283D;
+    --paper:#FDFBF7;
+    --coral:#FF6B4A;
+    --amber:#E8A33D;
+    --teal:#146B63;
+    --line:#CBD6CE;
+    --muted:#5C6B66;
+    --day1:#E8A33D;
+    --day2:#3F8F6B;
+    --day3:#D65B4A;
+    --day4:#3E6FA6;
+    --day5:#8B5FA6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--sea-mist);color:var(--ink);
+    font-family:'Noto Sans TC','Space Grotesk',sans-serif;line-height:1.55;}
+  body{padding:0 0 80px;}
+  .num,.tag,.time,.price,.eyebrow,.pill{font-family:'Space Grotesk','Noto Sans TC',sans-serif;}
+  a{color:var(--teal);}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- Hero ---------- */
+  header.hero{padding:56px 20px 40px;background:
+      radial-gradient(ellipse 900px 400px at 15% 0%, rgba(255,107,74,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(62,111,166,0.10), transparent 60%);
+    border-bottom:1px solid var(--line);}
+  .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 10px;opacity:0;animation:rise .6s .05s ease forwards;}
+  h1{font-size:clamp(32px,6vw,52px);font-weight:700;margin:0 0 8px;letter-spacing:-.01em;opacity:0;animation:rise .6s .15s ease forwards;}
+  .sub{font-size:16px;color:var(--muted);margin:0;max-width:520px;opacity:0;animation:rise .6s .25s ease forwards;}
+  @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){ .eyebrow,h1,.sub{animation:none;opacity:1;} }
+
+  /* ---------- boarding-pass strip ---------- */
+  .passes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px;}
+  @media(max-width:600px){.passes{grid-template-columns:1fr;}}
+  .pass{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px 18px;position:relative;overflow:hidden;}
+  .pass::before{content:"";position:absolute;top:0;bottom:0;left:0;width:5px;background:var(--coral);}
+  .pass.hotel::before{background:var(--teal);}
+  .pass .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .pass .v{font-size:15px;font-weight:600;margin-top:2px;}
+  .pass .route{display:flex;align-items:center;gap:8px;margin-top:10px;font-family:'Space Grotesk';font-size:20px;font-weight:600;}
+  .pass .route .arrow{color:var(--coral);font-size:16px;}
+  .pass .meta{margin-top:8px;font-size:13px;color:var(--muted);}
+  .pass .addr{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);}
+  .pass .addr-line{font-size:12px;color:var(--muted);line-height:1.8;}
+  .addr-tag{display:inline-block;font-family:'Space Grotesk';font-size:9.5px;font-weight:700;color:#fff;
+    border-radius:4px;padding:1px 4px;margin-right:6px;letter-spacing:.03em;}
+  .addr-tag.ko{background:var(--day4);}
+  .addr-tag.en{background:var(--day3);}
+  .pass .maplink{margin-top:8px;}
+
+  /* ---------- budget gauge ---------- */
+  .budget-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-top:28px;}
+  .budget-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
+  .budget-top .label{font-size:13px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .budget-top .amount{font-size:26px;font-weight:700;font-family:'Space Grotesk';}
+  .budget-top .amount span{font-size:14px;color:var(--muted);font-weight:500;}
+  .gauge{margin-top:14px;height:14px;border-radius:8px;background:#E3E9E4;overflow:hidden;position:relative;}
+  .gauge-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--teal),var(--coral));
+    border-radius:8px 0 0 8px;width:0%;transition:width 1s cubic-bezier(.2,.8,.2,1);}
+  @media (prefers-reduced-motion:reduce){.gauge-fill{transition:none;}}
+  .gauge-cap{position:absolute;top:-6px;right:0;width:2px;height:26px;background:var(--ink);opacity:.35;}
+  .budget-legend{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted);}
+
+  /* ---------- section titles ---------- */
+  .section-title{margin:52px 0 18px;display:flex;align-items:baseline;gap:10px;}
+  .section-title h2{font-size:22px;margin:0;font-weight:700;}
+  .section-title .line{flex:1;height:1px;background:var(--line);}
+  .section-note{margin:-10px 0 18px;font-size:13px;color:var(--muted);}
+
+  /* ---------- map ---------- */
+  .map-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;}
+  #map{height:460px;width:100%;background:#E3E9E4;}
+  .map-legend{display:flex;flex-wrap:wrap;gap:8px 16px;padding:14px 18px;border-top:1px solid var(--line);}
+  .map-legend label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;user-select:none;}
+  .map-legend input{display:none;}
+  .map-legend .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;transition:opacity .15s;}
+  .map-legend input:not(:checked) + .dot{opacity:.25;}
+  .map-legend .lbl{transition:opacity .15s;}
+  .map-legend input:not(:checked) ~ .lbl{opacity:.4;}
+  .leaflet-popup-content{font-family:'Noto Sans TC',sans-serif;font-size:13px;line-height:1.5;}
+  .leaflet-popup-content b{font-size:14px;}
+  .leaflet-popup-content a{color:var(--teal);font-weight:600;}
+
+  /* ---------- timeline / line-map ---------- */
+  .timeline{position:relative;padding-left:34px;}
+  .timeline::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:3px;
+    background:linear-gradient(to bottom,var(--day1),var(--day2),var(--day3),var(--day4),var(--day5));
+    border-radius:3px;}
+  .station{position:relative;margin-bottom:14px;}
+  .node{position:absolute;left:-34px;top:18px;width:24px;height:24px;border-radius:50%;
+    border:4px solid var(--sea-mist);box-shadow:0 0 0 2px var(--line-color,var(--ink));
+    background:var(--dot);}
+  .day-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .day-head{display:flex;flex-direction:column;gap:5px;padding:16px 18px;cursor:pointer;user-select:none;position:relative;}
+  .day-head:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+  .day-head-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .day-badge{font-family:'Space Grotesk';font-weight:700;font-size:14px;color:#fff;
+    border-radius:8px;padding:4px 10px;flex-shrink:0;}
+  .day-head .date{font-size:12px;color:var(--muted);letter-spacing:.04em;}
+  .day-head .title{font-size:17px;font-weight:700;line-height:1.4;}
+  .day-head .total{font-family:'Space Grotesk';font-size:13px;color:var(--muted);}
+  .day-head .total b{color:var(--ink);font-weight:700;}
+  .chevron{width:20px;height:20px;flex-shrink:0;transition:transform .3s ease;color:var(--muted);}
+  @media (prefers-reduced-motion:reduce){.chevron{transition:none;}}
+  .day-card.open .chevron{transform:rotate(180deg);}
+  .day-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+  @media (prefers-reduced-motion:reduce){.day-body{transition:none;}}
+  .day-body-inner{padding:4px 18px 18px;border-top:1px solid var(--line);}
+  .stop{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);}
+  .stop:last-of-type{border-bottom:none;}
+  .stop .time{font-size:13px;font-weight:600;color:var(--muted);padding-top:2px;}
+  .stop .content .act{font-size:15px;font-weight:500;}
+  .stop .content .note{font-size:13px;color:var(--muted);margin-top:2px;}
+  .stop .content .cost{font-size:13px;font-weight:600;color:var(--ink);margin-top:6px;
+    background:#F3F0E8;display:inline-block;padding:3px 10px;border-radius:8px;}
+  .stop .content .cost.free{background:transparent;color:var(--muted);font-weight:500;padding:3px 0;}
+  .stop .content .cost.pass{background:#EDE3F5;color:#6B3FA0;}
+  .badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.03em;border-radius:20px;
+    padding:2px 9px;margin-left:8px;vertical-align:1px;white-space:nowrap;}
+  .badge.ticket{background:#FBEBD3;color:#8A5A12;}
+  .badge.food{background:#FDE3DA;color:#A83A20;}
+  .badge.transport{background:#E1EDE6;color:#146B63;}
+  .badge.free{background:#E6F1EA;color:#2A6B49;}
+  .badge.logistics{background:#EAEAEA;color:#555;}
+  .badge.pending{background:transparent;border:1px dashed #B08900;color:#8A6D00;}
+  .badge.pass{background:#EDE3F5;color:#6B3FA0;}
+  .backup{margin-top:10px;background:#F3EFE3;border:1px solid #E4DBC3;border-radius:10px;
+    padding:10px 14px;font-size:13px;color:#6b5b2f;}
+  .backup b{color:#5b4a1e;}
+
+  /* ---------- trilingual place line ---------- */
+  .place-line{margin-top:6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;
+    font-size:12.5px;color:var(--ink);}
+  .place-line .lang{display:inline-flex;align-items:baseline;gap:4px;}
+  .place-line .lang .code{font-family:'Space Grotesk';font-size:9.5px;font-weight:700;color:#fff;
+    background:var(--teal);border-radius:4px;padding:1px 4px;letter-spacing:.03em;}
+  .place-line .lang.ko .code{background:var(--day4);}
+  .place-line .lang.en .code{background:var(--day3);}
+  .place-line .sep{color:var(--line);}
+  .maplink{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
+    color:var(--teal);text-decoration:none;border:1px solid var(--teal);border-radius:20px;
+    padding:2px 10px 2px 8px;margin-left:2px;}
+  .maplink:hover{background:var(--teal);color:#fff;}
+  .maplink svg{width:12px;height:12px;}
+
+  /* ---------- tips grid ---------- */
+  .tips{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:600px){.tips{grid-template-columns:1fr;}}
+  .tip{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+  .tip .icon{font-size:20px;}
+  .tip h3{font-size:14px;margin:8px 0 4px;font-weight:700;}
+  .tip p{font-size:13px;color:var(--muted);margin:0;}
+
+  /* ---------- checklist ---------- */
+  .checklist{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:8px 6px;}
+  .check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--line);}
+  .check-item:last-child{border-bottom:none;}
+  .check-item input{margin-top:3px;width:18px;height:18px;accent-color:var(--teal);flex-shrink:0;cursor:pointer;}
+  .check-item label{font-size:14px;cursor:pointer;}
+  .check-item .desc{display:block;font-size:12px;color:var(--muted);margin-top:2px;}
+  .check-item.done label{color:var(--muted);text-decoration:line-through;}
+
+  footer{margin-top:60px;text-align:center;font-size:12px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">BUSAN · 부산 · 8월 31일 – 9월 4일</p>
+    <h1>釜山 5天4夜行程</h1>
+    <p class="sub">兩人自由行 · 海雲台 → 南浦洞・西面 · 沿海岸線一路玩到市區</p>
+
+    <div class="passes">
+      <div class="pass">
+        <div class="k">Flight · 去程</div>
+        <div class="route">TPE <span class="arrow">✈</span> PUS</div>
+        <div class="v">LJ752 · 02:40 → 06:15</div>
+        <div class="meta">8/31（一）· 桃園T1 → 金海國際航廈</div>
+      </div>
+      <div class="pass">
+        <div class="k">Flight · 回程</div>
+        <div class="route">PUS <span class="arrow">✈</span> TPE</div>
+        <div class="v">LJ751 · 22:00 → 23:40</div>
+        <div class="meta">9/4（五）· 金海國際航廈 → 桃園T1</div>
+      </div>
+      <div class="pass hotel">
+        <div class="k">Stay 1 · 海雲台</div>
+        <div class="v">Marysol by Haeundae Beach</div>
+        <div class="meta">8/31 → 9/2（2晚）· KRW 208,000</div>
+        <div class="addr">
+          <div class="addr-line"><span class="addr-tag ko">KO</span>부산 해운대구 구남로 37</div>
+          <div class="addr-line"><span class="addr-tag en">EN</span>37, Gunam-ro, Haeundae-gu, 48095 Busan, South Korea</div>
+        </div>
+        <a class="maplink" href="https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%20%ED%95%B4%EC%9A%B4%EB%8C%80%EA%B5%AC%20%EA%B5%AC%EB%82%A8%EB%A1%9C%2037" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Naver Map</a>
+      </div>
+      <div class="pass hotel">
+        <div class="k">Stay 2 · 西面／釜田</div>
+        <div class="v">Lion Hotel Busan 雄獅酒店</div>
+        <div class="meta">9/2 → 9/4（2晚）· KRW 115,830</div>
+        <div class="addr">
+          <div class="addr-line"><span class="addr-tag ko">KO</span>부산 부산진구 중앙대로691번가길 14-7</div>
+          <div class="addr-line"><span class="addr-tag en">EN</span>14-7, Jungang-daero 691beonga-gil, Busanjin-gu, 47287 Busan, South Korea</div>
+        </div>
+        <a class="maplink" href="https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%20%EB%B6%80%EC%82%B0%EC%A7%84%EA%B5%AC%20%EC%A4%91%EC%95%99%EB%8C%80%EB%A1%9C691%EB%B2%88%EA%B0%80%EA%B8%B8%2014-7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Naver Map</a>
+      </div>
+    </div>
+
+    <div class="budget-card">
+      <div class="budget-top">
+        <div class="label">每人預估總花費（含機票・住宿・釜山Pass BIG5・現場花費，不含購物）</div>
+        <div class="amount" style="color:var(--coral);">約 NT$21,030–21,670 <span>／ 上限 NT$20,000</span></div>
+      </div>
+      <div class="gauge">
+        <div class="gauge-fill" id="gaugeFill"></div>
+        <div class="gauge-cap"></div>
+      </div>
+      <div class="budget-legend">
+        <span>0</span>
+        <span style="color:var(--coral);font-weight:600;">已超出上限約 NT$1,030–1,670／人</span>
+        <span>NT$20,000</span>
+      </div>
+      <div class="section-note" style="margin-top:12px;">⚠️ <b>融合朋友版本後，預算已超出每人2萬台幣的上限約1,200-1,860元。</b>主要新增：Day1的Outlet、Millac Market、廣安里共乘遊艇+煙火（已訂票，金額為估計）；Day2的Skyline Luge（改用Pass紫色兌換，X the Sky也改用Pass，Spa Land則改為現場付費）；Day3整天新增（甘川洞+松島纜車/天空步道+白淺灘+ARTE MUSEUM，含多段計程車/公車）；Day5新增田浦咖啡街、西面市場。太宗台因Danubi小火車事故停駛（復駛時間未定）已移出主行程，僅列備選。天空膠囊列車已於KKday實付TWD 1,134。</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="section-title"><h2>地圖總覽</h2><div class="line"></div></div>
+  <p class="section-note">虛線是每天的移動路線，點地圖上的圓點可看地點名稱與Naver Map連結；下方圖例可切換顯示/隱藏某一天。</p>
+  <div class="map-card">
+    <div id="map"></div>
+    <div class="map-legend" id="mapLegend"></div>
+  </div>
+
+  <div class="section-title"><h2>逐日行程</h2><div class="line"></div></div>
+  <p class="section-note">每個地點下方標有 ZH／KO／EN 三語對照名稱，點「Naver Map」可直接開啟該地點的地圖搜尋結果（韓國當地導航用Naver Map較準確）。</p>
+  <div class="timeline" id="timeline"></div>
+
+  <div class="section-title"><h2>實用小提醒</h2><div class="line"></div></div>
+  <div class="tips">
+    <div class="tip"><div class="icon">💳</div><h3>交通卡</h3><p>買T-money／WOWPASS即可，不建議買地鐵一日券——它不能用在金海輕軌和東海線（藍線公園那段），你們Day1、2、5都會用到這兩條線。</p></div>
+    <div class="tip"><div class="icon">🚉</div><h3>松亭 ≠ 松島</h3><p>松亭（송정）是藍線公園最遠站，在海雲台區；松島（송도）是Day3海上纜車景點，在西區，方向完全不同，別搞混。</p></div>
+    <div class="tip"><div class="icon">🎫</div><h3>膠囊列車訂票</h3><p>官網每週二早上7點（韓國時間）開放4週後那一週的預約。建議用KKday／Klook訂，中文介面、可刷台幣卡、24小時前可取消。</p></div>
+    <div class="tip"><div class="icon">🌦️</div><h3>天氣</h3><p>9月初仍偶有颱風尾聲，約22–28°C，白天悶熱易有短暫大雨，帶輕便雨具、防曬，鞋子選好走的。</p></div>
+    <div class="tip"><div class="icon">🎟️</div><h3>Visit Busan Pass</h3><p>實體卡有T-money功能，但不是免費搭車，一樣要自己加值；只有景點門票部分才是真的免費／折扣。</p></div>
+    <div class="tip"><div class="icon">🧳</div><h3>行李寄放</h3><p>Day1一早寄放Marysol、Day5退房後寄放雄獅酒店，兩間都在旅客常住區域，一般可協助保管。</p></div>
+  </div>
+
+  <div class="section-title"><h2>還沒定案，記得回來更新</h2><div class="line"></div></div>
+  <div class="checklist" id="checklist"></div>
+
+  <footer>釜山 5天4夜行程 · 匯率統一以 1 TWD = 43 KRW 估算 · 部分Naver Map為朋友版本提供的實際地點連結，部分為關鍵字搜尋結果，開啟後請確認是否為正確地點 · 所有金額為預估值，僅供參考</footer>
+</div>
+
+<script>
+// ---------- trilingual place dictionary + Naver Map search links ----------
+const places = {
+  "gimhae_airport": {
+    "zh": "金海國際機場",
+    "ko": "김해국제공항",
+    "en": "Gimhae Int'l Airport",
+    "lat": 35.1728688,
+    "lng": 128.9471783,
+    "url": "https://map.naver.com/p/search/%EA%B9%80%ED%95%B4%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD"
+  },
+  "haeundae_market": {
+    "zh": "海雲台傳統市場",
+    "ko": "해운대시장",
+    "en": "Haeundae Market",
+    "lat": 35.1614537,
+    "lng": 129.1622489,
+    "url": "https://naver.me/GzE9ensG"
+  },
+  "haeri_street": {
+    "zh": "海里團路",
+    "ko": "해리단길",
+    "en": "Haeri-dan Street",
+    "lat": 35.1633,
+    "lng": 129.1594,
+    "url": "https://naver.me/5tJ2CEOs"
+  },
+  "outlet": {
+    "zh": "樂天名品Outlet",
+    "ko": "롯데프리미엄아울렛 동부산점",
+    "en": "Lotte Premium Outlet Donghae",
+    "lat": 35.1949,
+    "lng": 129.2159,
+    "url": "https://naver.me/GwpMkOIT"
+  },
+  "spaland": {
+    "zh": "Spa Land 汗蒸幕",
+    "ko": "센텀시티 스파랜드",
+    "en": "Spa Land Centum City",
+    "lat": 35.1682338,
+    "lng": 129.1295279,
+    "url": "https://naver.me/xRhE40iE"
+  },
+  "millac_market": {
+    "zh": "Millac the Market",
+    "ko": "밀락더마켓",
+    "en": "Millak The Market",
+    "lat": 35.1479,
+    "lng": 129.1173,
+    "url": "https://naver.me/Fuz5ZqYE"
+  },
+  "gwangalli": {
+    "zh": "廣安里海水浴場",
+    "ko": "광안리해수욕장",
+    "en": "Gwangalli Beach",
+    "lat": 35.1531794,
+    "lng": 129.1186609,
+    "url": "https://naver.me/xzxmzK1j"
+  },
+  "gwangalli_yacht": {
+    "zh": "廣安里共乘遊艇",
+    "ko": "광안리 요트투어",
+    "en": "Gwangalli Shared Yacht Tour",
+    "lat": 35.1531,
+    "lng": 129.1186,
+    "url": "https://naver.me/FMcMmB83"
+  },
+  "marysol": {
+    "zh": "Marysol by Haeundae Beach",
+    "ko": "메리솔 해운대비치",
+    "en": "Marysol by Haeundae Beach",
+    "lat": 35.161036,
+    "lng": 129.161316,
+    "url": "https://naver.me/FgHDIhx7"
+  },
+  "gs25": {
+    "zh": "GS25便利商店",
+    "ko": "GS25",
+    "en": "GS25 Convenience Store",
+    "lat": 35.1618,
+    "lng": 129.1615,
+    "url": "https://naver.me/xZjmJLxi"
+  },
+  "mipo_station": {
+    "zh": "藍線公園 尾浦站",
+    "ko": "해운대 블루라인파크 미포정거장",
+    "en": "Blueline Park Mipo Station",
+    "lat": 35.158284,
+    "lng": 129.1727672,
+    "url": "https://naver.me/FiPtXtBt"
+  },
+  "skyline_luge": {
+    "zh": "Skyline Luge 斜坡滑車",
+    "ko": "스카이라인 루지",
+    "en": "Skyline Luge Busan",
+    "lat": 35.1940567,
+    "lng": 129.2186386,
+    "url": "https://naver.me/IDFUcLWo"
+  },
+  "gijang_noodle": {
+    "zh": "在成小麥麵 機張店",
+    "ko": "재성밀면 기장점",
+    "en": "Jaeseong Milmyeon Gijang",
+    "lat": 35.2438,
+    "lng": 129.2136,
+    "url": "https://naver.me/G7VqMwQ0"
+  },
+  "yonggungsa": {
+    "zh": "海東龍宮寺",
+    "ko": "해동용궁사",
+    "en": "Haedong Yonggungsa Temple",
+    "lat": 35.1884543,
+    "lng": 129.2231109,
+    "url": "https://naver.me/58NdWaSm"
+  },
+  "songjeong_beach": {
+    "zh": "松亭海灘",
+    "ko": "송정해수욕장",
+    "en": "Songjeong Beach",
+    "lat": 35.1786125,
+    "lng": 129.1997133,
+    "url": "https://map.naver.com/p/search/%EC%86%A1%EC%A0%95%ED%95%B4%EC%88%98%EC%9A%95%EC%9E%A5"
+  },
+  "cheongsapo_skywalk": {
+    "zh": "青沙浦紅白燈塔・踏石觀景台",
+    "ko": "청사포 다릿돌전망대",
+    "en": "Cheongsapo Daritdol Skywalk",
+    "lat": 35.1640365,
+    "lng": 129.1967173,
+    "url": "https://naver.me/GtUOihH6"
+  },
+  "souvenir_shop": {
+    "zh": "紀念品店",
+    "ko": "기념품샵",
+    "en": "Souvenir Shop",
+    "lat": 35.1642,
+    "lng": 129.1965,
+    "url": "https://naver.me/xnrBpk66"
+  },
+  "x_the_sky": {
+    "zh": "釜山 X the Sky",
+    "ko": "부산 엑스더스카이",
+    "en": "Busan X the Sky",
+    "lat": 35.1594845,
+    "lng": 129.1701682,
+    "url": "https://naver.me/GDa2Qh4H"
+  },
+  "pork_soup": {
+    "zh": "水邊最高豬肉湯飯",
+    "ko": "수변최고돼지국밥",
+    "en": "Subyeon Choego Pork Soup",
+    "lat": 35.16,
+    "lng": 129.1615,
+    "url": "https://naver.me/5Hka8nJv"
+  },
+  "bay101": {
+    "zh": "The Bay 101",
+    "ko": "더베이101",
+    "en": "The Bay 101",
+    "lat": 35.1547,
+    "lng": 129.1495,
+    "url": "https://naver.me/xJiB178A"
+  },
+  "lion_hotel": {
+    "zh": "雄獅酒店",
+    "ko": "라이언호텔 부산",
+    "en": "Lion Hotel Busan",
+    "lat": 35.1551881,
+    "lng": 129.0561872,
+    "url": "https://naver.me/xcnjpavI"
+  },
+  "gamcheon": {
+    "zh": "甘川洞文化村",
+    "ko": "감천문화마을",
+    "en": "Gamcheon Culture Village",
+    "lat": 35.0973935,
+    "lng": 129.0105921,
+    "url": "https://naver.me/5iTdxyDV"
+  },
+  "songdo_cable": {
+    "zh": "松島海上纜車",
+    "ko": "송도해상케이블카",
+    "en": "Songdo Marine Cable Car",
+    "lat": 35.0763876,
+    "lng": 129.0236199,
+    "url": "https://naver.me/Fmf6KBhZ"
+  },
+  "yonggung_skywalk": {
+    "zh": "松島龍宮天空步道",
+    "ko": "송도용궁구름다리",
+    "en": "Songdo Yonggung Cloud Bridge",
+    "lat": 35.061897,
+    "lng": 129.022214,
+    "url": "https://naver.me/5T4AUbEV"
+  },
+  "huinnyeoul": {
+    "zh": "白淺灘文化村",
+    "ko": "흰여울문화마을",
+    "en": "Huinnyeoul Culture Village",
+    "lat": 35.0782798,
+    "lng": 129.0453198,
+    "url": "https://naver.me/xLWAPvjS"
+  },
+  "arte_museum": {
+    "zh": "ARTE MUSEUM Busan",
+    "ko": "아르떼뮤지엄 부산",
+    "en": "ARTE MUSEUM Busan",
+    "lat": 35.081,
+    "lng": 129.0483,
+    "url": "https://naver.me/FIfsvnna"
+  },
+  "jagalchi": {
+    "zh": "札嘎其市場",
+    "ko": "자갈치시장",
+    "en": "Jagalchi Market",
+    "lat": 35.0966339,
+    "lng": 129.0307965,
+    "url": "https://naver.me/xBwJzsdQ"
+  },
+  "nampo_dong": {
+    "zh": "南浦洞",
+    "ko": "남포동",
+    "en": "Nampo-dong",
+    "lat": 35.0983,
+    "lng": 129.0301,
+    "url": "https://naver.me/GdTl2Wk3"
+  },
+  "gwangbok_street": {
+    "zh": "光復路時尚街",
+    "ko": "광복로패션거리",
+    "en": "Gwangbok-ro Fashion Street",
+    "lat": 35.1005,
+    "lng": 129.03,
+    "url": "https://naver.me/Gsj2q3ln"
+  },
+  "biff_square": {
+    "zh": "BIFF廣場",
+    "ko": "BIFF광장",
+    "en": "BIFF Square",
+    "lat": 35.098243,
+    "lng": 129.029212,
+    "url": "https://naver.me/x4FLoJ5t"
+  },
+  "busan_tower": {
+    "zh": "釜山塔",
+    "ko": "부산타워",
+    "en": "Busan Tower",
+    "lat": 35.1011913,
+    "lng": 129.0323697,
+    "url": "https://naver.me/GbDFYSR5"
+  },
+  "lotte_mart": {
+    "zh": "樂天超市",
+    "ko": "롯데마트",
+    "en": "Lotte Mart",
+    "lat": 35.0985,
+    "lng": 129.0295,
+    "url": "https://naver.me/FlZns9hH"
+  },
+  "seomyeon_market": {
+    "zh": "西面市場",
+    "ko": "서면시장",
+    "en": "Seomyeon Market",
+    "lat": 35.1567,
+    "lng": 129.0594,
+    "url": "https://naver.me/x8tLVWqk"
+  },
+  "seomyeon_mall": {
+    "zh": "西面地下街",
+    "ko": "서면지하상가",
+    "en": "Seomyeon Underground Mall",
+    "lat": 35.1562986,
+    "lng": 129.059155,
+    "url": "https://naver.me/FLyvzqK2"
+  },
+  "jeonpo_cafe": {
+    "zh": "田浦咖啡街",
+    "ko": "전포카페거리",
+    "en": "Jeonpo Cafe Street",
+    "lat": 35.1553,
+    "lng": 129.0665,
+    "url": "https://naver.me/FgHIddKA"
+  },
+  "lotte_dept": {
+    "zh": "樂天百貨",
+    "ko": "롯데백화점 부산본점",
+    "en": "Lotte Department Store",
+    "lat": 35.1578,
+    "lng": 129.0598,
+    "url": "https://naver.me/xZVbDc9R"
+  },
+  "taejongdae": {
+    "zh": "太宗台",
+    "ko": "태종대",
+    "en": "Taejongdae",
+    "lat": 35.05307,
+    "lng": 129.0872,
+    "url": "https://map.naver.com/p/search/%ED%83%9C%EC%A2%85%EB%8C%80"
+  },
+  "oryukdo": {
+    "zh": "五六島天空步道",
+    "ko": "오륙도스카이워크",
+    "en": "Oryukdo Skywalk",
+    "lat": 35.1006767,
+    "lng": 129.1244009,
+    "url": "https://map.naver.com/p/search/%EC%98%A4%EB%A5%99%EB%8F%84%EC%8A%A4%EC%B9%B4%EC%9D%B4%EC%9B%8C%ED%81%AC"
+  }
+};
+
+const dayColors = {1:"#E8A33D", 2:"#3F8F6B", 3:"#D65B4A", 4:"#3E6FA6", 5:"#8B5FA6"};
+
+const days = [
+  {
+    "id": 1,
+    "color": "var(--day1)",
+    "date": "8/31（一）",
+    "title": "抵達日：海雲台・Outlet・Spa Land・廣安里遊艇煙火",
+    "total": "約139,000-149,000₩（2人／單人約69,500-74,500₩，含已付款遊艇）",
+    "open": true,
+    "stops": [
+      {
+        "t": "06:15",
+        "a": "抵達金海國際機場",
+        "place": "gimhae_airport",
+        "tag": "transport"
+      },
+      {
+        "t": "06:45",
+        "a": "前往海雲台",
+        "note": "計程車約50分鐘（主要交通方式，公車/輕軌約60-70分鐘為備選）",
+        "tag": "transport",
+        "cost": "約25,000-30,000₩（2人，計程車）"
+      },
+      {
+        "t": "07:35",
+        "a": "飯店寄放行李",
+        "place": "marysol",
+        "tag": "logistics"
+      },
+      {
+        "t": "07:35",
+        "a": "海邊散步、咖啡廳",
+        "note": "海雲台傳統市場09:00才開門，先在附近晃晃",
+        "tag": "free",
+        "cost": "約6,000₩（2人，咖啡）"
+      },
+      {
+        "t": "09:00",
+        "a": "早餐：海雲台傳統市場",
+        "place": "haeundae_market",
+        "note": "營業時間0900-2200，海鮮煎餅",
+        "tag": "food",
+        "cost": "約10,000₩（2人）"
+      },
+      {
+        "t": "10:00",
+        "a": "海邊散步／緩衝",
+        "note": "海里團路店家11:00後才營業，先緩衝",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "11:00",
+        "a": "海里團路",
+        "place": "haeri_street",
+        "note": "商圈，此時店家已開始營業",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "12:00",
+        "a": "計程車前往Outlet",
+        "note": "約15分鐘（公車約40分鐘為備選）",
+        "tag": "transport",
+        "cost": "約8,000-10,000₩（2人，估）"
+      },
+      {
+        "t": "12:15",
+        "a": "Outlet 逛街",
+        "place": "outlet",
+        "note": "拉長到2小時45分鐘，逛得比較從容",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "15:00",
+        "a": "計程車前往住宿",
+        "note": "約20分鐘（公車約40分鐘為備選）",
+        "tag": "transport",
+        "cost": "約10,000-12,000₩（2人，估）"
+      },
+      {
+        "t": "15:20",
+        "a": "Check-in Marysol",
+        "place": "marysol",
+        "note": "入住時間15:00後，最晚22:00前",
+        "tag": "logistics"
+      },
+      {
+        "t": "15:30",
+        "a": "休息整理",
+        "note": "稍作休息、放行李",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "16:40",
+        "a": "計程車前往Spa Land",
+        "note": "約20分鐘（地鐵約40分鐘為備選）；刻意排晚一點，讓48小時Pass窗口能延伸到週三涵蓋ARTE MUSEUM",
+        "tag": "transport",
+        "cost": "約10,000-12,000₩（2人，估）"
+      },
+      {
+        "t": "17:00",
+        "a": "Spa Land 汗蒸幕",
+        "place": "spaland",
+        "note": "營業時間08:00-2300；17:00進場+48小時＝週三17:00，比ARTE MUSEUM 15:55進場多1小時5分緩衝",
+        "tag": "ticket",
+        "cost": "約30,000-40,000₩（2人）"
+      },
+      {
+        "t": "19:30",
+        "a": "計程車前往廣安里",
+        "note": "約15分鐘",
+        "tag": "transport",
+        "cost": "約8,000-10,000₩（2人，估）"
+      },
+      {
+        "t": "19:45",
+        "a": "廣安里海水浴場散步",
+        "place": "gwangalli",
+        "note": "上船前快速走走",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "20:00",
+        "a": "廣安里共乘遊艇",
+        "place": "gwangalli_yacht",
+        "note": "✅已付款，20:30煙火場，行程約1小時",
+        "tag": "ticket",
+        "cost": "已付款 TWD 1,250（2人）"
+      },
+      {
+        "t": "21:00",
+        "a": "前往Millac the Market",
+        "note": "距離很近，步行或短程計程車",
+        "tag": "transport",
+        "cost": "約2,000-5,000₩（2人，估）"
+      },
+      {
+        "t": "21:15",
+        "a": "Millac the Market 晚餐",
+        "place": "millac_market",
+        "note": "逛街+吃，旁邊有漁市場生魚片",
+        "tag": "food",
+        "cost": "約20,000₩（2人）"
+      },
+      {
+        "t": "22:00",
+        "a": "計程車返回Marysol",
+        "note": "約20分鐘",
+        "tag": "transport",
+        "cost": "約10,000-12,000₩（2人，估）"
+      },
+      {
+        "t": "22:30",
+        "a": "返回Marysol休息",
+        "place": "marysol",
+        "tag": "logistics"
+      }
+    ],
+    "backup": "廣安里散步若時間充裕仍可保留悠閒走走；Outlet／海里團路視體力可縮短"
+  },
+  {
+    "id": 2,
+    "color": "var(--day2)",
+    "date": "9/1（二）",
+    "title": "海岸列車→Skyline Luge→龍宮寺→青沙浦→天空膠囊列車→X the Sky",
+    "total": "約210,000-215,000₩（2人／單人約105,000-107,500₩，不含Pass費用）",
+    "stops": [
+      {
+        "t": "08:00",
+        "a": "起床",
+        "tag": "free"
+      },
+      {
+        "t": "08:15",
+        "a": "早餐 GS25",
+        "place": "gs25",
+        "tag": "food",
+        "cost": "約6,000₩（2人）"
+      },
+      {
+        "t": "08:30",
+        "a": "住宿→尾浦，兌換海岸列車票",
+        "place": "mipo_station",
+        "note": "步行+公車約20分鐘",
+        "tag": "pass",
+        "cost": "使用釜山Pass（一日票原價16,000₩/人）",
+        "costType": "pass"
+      },
+      {
+        "t": "09:00",
+        "a": "海岸列車 尾浦→松亭方向",
+        "note": "車程約1小時（沿途經青沙浦）",
+        "tag": "transport",
+        "cost": "含在海岸列車Pass內"
+      },
+      {
+        "t": "10:00",
+        "a": "計程車前往Skyline Luge",
+        "note": "松亭到機張約15-20分鐘",
+        "tag": "transport",
+        "cost": "約8,000-10,000₩（2人，估）"
+      },
+      {
+        "t": "10:20",
+        "a": "Skyline Luge Busan：空中纜車＋斜坡滑車",
+        "place": "skyline_luge",
+        "note": "營業時間10:00-1800",
+        "tag": "pass",
+        "cost": "使用釜山Pass（原價約27,000₩/人，2人54,000₩）",
+        "costType": "pass"
+      },
+      {
+        "t": "13:00",
+        "a": "步行前往午餐",
+        "note": "在成小麥麵機張店就在附近",
+        "tag": "transport",
+        "cost": "免費（步行）"
+      },
+      {
+        "t": "13:15",
+        "a": "午餐：在成小麥麵 機張店（冷麵）",
+        "place": "gijang_noodle",
+        "note": "營業時間11:00-19:30，不一定要吃這間，可再找其他家",
+        "tag": "food",
+        "cost": "約20,000₩（2人）"
+      },
+      {
+        "t": "14:00",
+        "a": "步行前往海東龍宮寺",
+        "note": "與Skyline Luge僅一路之隔，步行約8-10分",
+        "tag": "transport",
+        "cost": "免費（步行）"
+      },
+      {
+        "t": "14:10",
+        "a": "海東龍宮寺",
+        "place": "yonggungsa",
+        "note": "營業時間04:30-19:20",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "15:00",
+        "a": "計程車前往松亭",
+        "note": "約15分鐘（公車約40分鐘為備選，但會趕不上15:20的列車，不建議）",
+        "tag": "transport",
+        "cost": "實測約6,000-6,500₩"
+      },
+      {
+        "t": "15:20",
+        "a": "海岸列車 松亭→青沙浦",
+        "place": "cheongsapo_skywalk",
+        "note": "車程約20分鐘",
+        "tag": "pass",
+        "cost": "使用釜山Pass（同一張一日票）",
+        "costType": "pass"
+      },
+      {
+        "t": "15:40",
+        "a": "韓版灌籃高手平交道拍照",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "16:00",
+        "a": "紀念品店",
+        "place": "souvenir_shop",
+        "note": "使用釜山Pass特定商品可打85折",
+        "tag": "free",
+        "cost": "視個人消費"
+      },
+      {
+        "t": "16:20",
+        "a": "青沙浦紅白燈塔・踏石觀景台",
+        "place": "cheongsapo_skywalk",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "16:45",
+        "a": "前往藍線公園準備搭乘天空膠囊列車",
+        "place": "mipo_station",
+        "note": "提前抵達準備",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "17:00",
+        "a": "天空膠囊列車 青沙浦 → 尾浦",
+        "place": "cheongsapo_skywalk",
+        "note": "已訂票：膠囊2人座，2026-09-01 17:00場次，青沙浦出發A",
+        "tag": "ticket",
+        "cost": "已付款 TWD 1,134（KKday，Pass不適用）"
+      },
+      {
+        "t": "17:40",
+        "a": "釜山X the Sky：夕陽＋夜景",
+        "place": "x_the_sky",
+        "note": "營業時間10:00-2100（20:30停止入場）；日落時間18:53",
+        "tag": "pass",
+        "cost": "使用釜山Pass（原價約27,000₩/人，2人54,000₩）",
+        "costType": "pass"
+      },
+      {
+        "t": "20:00",
+        "a": "晚餐：水邊最高豬肉湯飯",
+        "place": "pork_soup",
+        "note": "24小時營業",
+        "tag": "food",
+        "cost": "約20,000₩（2人）"
+      },
+      {
+        "t": "21:00",
+        "a": "The Bay 101 散步看夜景",
+        "place": "bay101",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "21:30",
+        "a": "返回Marysol休息",
+        "place": "marysol",
+        "tag": "logistics"
+      }
+    ],
+    "backup": "Skyline Luge最晚離開時間需自行抓緊，若整體delay可考慮縮短龍宮寺或青沙浦拍照時間"
+  },
+  {
+    "id": 3,
+    "color": "var(--day3)",
+    "date": "9/2（三）",
+    "title": "轉住宿日：甘川洞・松島纜車＆天空步道・白淺灘・ARTE MUSEUM",
+    "total": "約215,000-225,000₩（2人／單人約107,500-112,500₩，不含Pass費用）",
+    "stops": [
+      {
+        "t": "09:30",
+        "a": "Check out Marysol",
+        "place": "marysol",
+        "note": "退房時間11:00前",
+        "tag": "logistics"
+      },
+      {
+        "t": "09:45",
+        "a": "早餐 GS25",
+        "place": "gs25",
+        "tag": "food",
+        "cost": "約6,000₩（2人）"
+      },
+      {
+        "t": "10:00",
+        "a": "計程車前往寄放行李",
+        "note": "約27分鐘（地鐵約43分鐘為備選）",
+        "tag": "transport",
+        "cost": "約15,000-18,000₩（2人，估）"
+      },
+      {
+        "t": "10:30",
+        "a": "寄放行李",
+        "place": "lion_hotel",
+        "tag": "logistics"
+      },
+      {
+        "t": "10:40",
+        "a": "計程車前往甘川洞文化村",
+        "note": "約28分鐘（公車約45分鐘為備選）",
+        "tag": "transport",
+        "cost": "約15,000-18,000₩（2人，估）"
+      },
+      {
+        "t": "11:10",
+        "a": "甘川洞文化村",
+        "place": "gamcheon",
+        "note": "小王子與狐狸雕像",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "12:40",
+        "a": "計程車前往松島海上纜車",
+        "note": "約28分鐘（公車約45分鐘為備選）",
+        "tag": "transport",
+        "cost": "約15,000-18,000₩（2人，估）"
+      },
+      {
+        "t": "13:10",
+        "a": "松島海上纜車（去）",
+        "place": "songdo_cable",
+        "note": "營業時間09:00-2100（20:30停止入場）；釜山Pass可免費升級水晶車廂",
+        "tag": "pass",
+        "cost": "使用釜山Pass（原價約17,000₩/人）",
+        "costType": "pass"
+      },
+      {
+        "t": "13:40",
+        "a": "松島龍宮天空步道",
+        "place": "yonggung_skywalk",
+        "note": "營業時間09:00-1800（17:30停止入場），走岩南公園下坡5-10分",
+        "tag": "ticket",
+        "cost": "約2,000₩（2人）"
+      },
+      {
+        "t": "14:10",
+        "a": "松島海上纜車（回）",
+        "place": "songdo_cable",
+        "tag": "pass",
+        "cost": "已含在去程Pass兌換內",
+        "costType": "pass"
+      },
+      {
+        "t": "14:30",
+        "a": "計程車前往白淺灘文化村",
+        "note": "約8分鐘（公車約31分鐘為備選）",
+        "tag": "transport",
+        "cost": "約5,000-8,000₩（2人，估）"
+      },
+      {
+        "t": "14:40",
+        "a": "白淺灘文化村",
+        "place": "huinnyeoul",
+        "note": "影島白淺灘海岸隧道",
+        "tag": "free",
+        "cost": "約20,000₩（2人，咖啡廳消費估）"
+      },
+      {
+        "t": "15:40",
+        "a": "計程車前往ARTE MUSEUM Busan",
+        "note": "約12分鐘（公車約32分鐘為備選）",
+        "tag": "transport",
+        "cost": "約6,000-8,000₩（2人，估）"
+      },
+      {
+        "t": "15:55",
+        "a": "ARTE MUSEUM Busan",
+        "place": "arte_museum",
+        "note": "營業時間10:00-2000（19:00停止入場），還有充裕緩衝；記得玩門口扭蛋！平日票約22,000₩/人",
+        "tag": "ticket",
+        "cost": "約44,000₩（2人，平日票）"
+      },
+      {
+        "t": "17:25",
+        "a": "計程車前往住宿Check-in",
+        "note": "約26分鐘（公車約53分鐘為備選）",
+        "tag": "transport",
+        "cost": "約15,000-18,000₩（2人，估）"
+      },
+      {
+        "t": "17:55",
+        "a": "Check-in 雄獅酒店",
+        "place": "lion_hotel",
+        "note": "入住時間15:00後",
+        "tag": "logistics"
+      },
+      {
+        "t": "18:30",
+        "a": "晚餐",
+        "tag": "food",
+        "cost": "約30,000₩（2人）"
+      }
+    ],
+    "backup": "以計程車為主要排程依據，若改搭公車全程可能累積delay超過1小時，會壓縮ARTE MUSEUM的緩衝；太宗台目前Danubi小火車事故停駛（復駛時間未定），已從主行程移除，僅列備選"
+  },
+  {
+    "id": 4,
+    "color": "var(--day4)",
+    "date": "9/3（四）",
+    "title": "南浦洞・BIFF・釜山塔・光復路",
+    "total": "約120,000-130,000₩（2人／單人約60,000-65,000₩，不含Pass費用）",
+    "stops": [
+      {
+        "t": "09:00",
+        "a": "起床",
+        "tag": "free"
+      },
+      {
+        "t": "10:00",
+        "a": "札嘎其市場",
+        "place": "jagalchi",
+        "note": "生魚片",
+        "tag": "food",
+        "cost": "約35,000₩（2人）"
+      },
+      {
+        "t": "11:30",
+        "a": "南浦洞逛街",
+        "place": "nampo_dong",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "12:30",
+        "a": "光復路時尚街",
+        "place": "gwangbok_street",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "13:30",
+        "a": "BIFF廣場",
+        "place": "biff_square",
+        "note": "糖餅",
+        "tag": "food",
+        "cost": "約10,000₩（2人）"
+      },
+      {
+        "t": "14:30",
+        "a": "釜山塔登塔",
+        "place": "busan_tower",
+        "note": "釜山Pass藍色景點，免費兌換",
+        "tag": "pass",
+        "cost": "使用釜山Pass（原價約13,000₩/人）",
+        "costType": "pass"
+      },
+      {
+        "t": "15:30",
+        "a": "自由時間",
+        "note": "國際市場／富平市場或回飯店休息",
+        "tag": "free",
+        "cost": "視個人消費"
+      },
+      {
+        "t": "18:00",
+        "a": "晚餐",
+        "tag": "food",
+        "cost": "約30,000₩（2人）"
+      },
+      {
+        "t": "19:00",
+        "a": "釜山塔燈光秀",
+        "place": "busan_tower",
+        "note": "19:00-21:50，每10分鐘一場，塔下即可欣賞",
+        "tag": "free",
+        "cost": "免費"
+      },
+      {
+        "t": "21:00",
+        "a": "樂天超市",
+        "place": "lotte_mart",
+        "note": "營業時間10:00-2300",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "22:00",
+        "a": "返回雄獅酒店休息",
+        "place": "lion_hotel",
+        "tag": "logistics"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "color": "var(--day5)",
+    "date": "9/4（五）",
+    "title": "西面採買・田浦咖啡街・退房・飛機",
+    "total": "約80,000-100,000₩（2人／單人約40,000-50,000₩，不含購物）",
+    "stops": [
+      {
+        "t": "10:00",
+        "a": "起床",
+        "tag": "free"
+      },
+      {
+        "t": "11:00",
+        "a": "Check out 雄獅酒店",
+        "place": "lion_hotel",
+        "note": "退房時間12:00前",
+        "tag": "logistics"
+      },
+      {
+        "t": "11:30",
+        "a": "西面市場",
+        "place": "seomyeon_market",
+        "tag": "food",
+        "cost": "約20,000₩（2人）"
+      },
+      {
+        "t": "12:30",
+        "a": "西面地下街",
+        "place": "seomyeon_mall",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "13:30",
+        "a": "田浦咖啡街",
+        "place": "jeonpo_cafe",
+        "tag": "food",
+        "cost": "約20,000₩（2人，咖啡估）"
+      },
+      {
+        "t": "15:00",
+        "a": "樂天百貨",
+        "place": "lotte_dept",
+        "note": "營業時間10:30-2030",
+        "tag": "free",
+        "cost": "免費（購物另計）"
+      },
+      {
+        "t": "18:00",
+        "a": "搭車前往金海機場國際航廈",
+        "tag": "transport",
+        "cost": "約3,000-20,000₩（2人，視方式）"
+      },
+      {
+        "t": "19:30",
+        "a": "抵達機場辦理登機",
+        "note": "國際線建議提前2小時",
+        "tag": "logistics"
+      },
+      {
+        "t": "22:00",
+        "a": "LJ751 起飛",
+        "tag": "transport"
+      }
+    ],
+    "backup": "五六島天空步道（免費）如果時間允許可加入下午時段"
+  }
+];
+const tagLabel = {
+  ticket:"門票", food:"餐飲", transport:"交通", free:"免費", logistics:"事項", pending:"待定", pass:"Pass兌換"
+};
+
+const mapIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>`;
+
+function renderPlaceLine(p){
+  if(!p) return "";
+  return `<div class="place-line">
+    <span class="lang zh"><span class="code">ZH</span>${p.zh}</span>
+    <span class="sep">·</span>
+    <span class="lang ko"><span class="code">KO</span>${p.ko}</span>
+    <span class="sep">·</span>
+    <span class="lang en"><span class="code">EN</span>${p.en}</span>
+    <a class="maplink" href="${p.url}" target="_blank" rel="noopener">${mapIcon}Naver Map</a>
+  </div>`;
+}
+
+function renderStop(s){
+  const tags = s.tag.split(" ").map(t=>`<span class="badge ${t}">${tagLabel[t]||t}</span>`).join("");
+  const place = s.place ? places[s.place] : null;
+  const costClass = s.costType ? ` ${s.costType}` : "";
+  return `<div class="stop">
+    <div class="time">${s.t}</div>
+    <div class="content">
+      <div class="act">${s.a}${tags}</div>
+      ${s.note ? `<div class="note">${s.note}</div>` : ""}
+      ${renderPlaceLine(place)}
+      ${s.cost ? `<div class="cost${costClass}">💰 ${s.cost}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function renderDay(d){
+  const stopsHtml = d.stops.map(renderStop).join("");
+  const backupHtml = d.backup ? `<div class="backup"><b>備選／備註　</b>${d.backup}</div>` : "";
+  return `
+  <div class="station">
+    <div class="node" style="background:${d.color}"></div>
+    <div class="day-card ${d.open?'open':''}" id="day-${d.id}">
+      <div class="day-head" role="button" tabindex="0" aria-expanded="${d.open?'true':'false'}" onclick="toggleDay(${d.id})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDay(${d.id})}">
+        <div class="day-head-top">
+          <div class="day-badge" style="background:${d.color}">DAY ${d.id} · ${d.date}</div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="title">${d.title}</div>
+        <div class="total">預估 <b>${d.total}</b></div>
+      </div>
+      <div class="day-body" id="body-${d.id}">
+        <div class="day-body-inner">${stopsHtml}${backupHtml}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+document.getElementById("timeline").innerHTML = days.map(renderDay).join("");
+
+// ---------- embedded map ----------
+function dayRoute(day){
+  const seq = [];
+  day.stops.forEach(s=>{
+    if(s.place && seq[seq.length-1] !== s.place) seq.push(s.place);
+  });
+  return seq.map(id=>({id, ...places[id]})).filter(p=>p.lat);
+}
+
+const map = L.map('map', {scrollWheelZoom:false}).setView([35.13, 129.09], 11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:'&copy; OpenStreetMap contributors',
+  maxZoom:19
+}).addTo(map);
+
+const dayLayers = {};
+days.forEach(d=>{
+  const route = dayRoute(d);
+  const color = dayColors[d.id];
+  const layer = L.layerGroup();
+
+  if(route.length > 1){
+    L.polyline(route.map(p=>[p.lat,p.lng]), {color, weight:3, opacity:.85, dashArray:"1,8", lineCap:"round"}).addTo(layer);
+  }
+  route.forEach((p,i)=>{
+    L.circleMarker([p.lat,p.lng], {
+      radius:8, color:"#fff", weight:2, fillColor:color, fillOpacity:1
+    }).bindPopup(
+      `<b>DAY ${d.id} · ${i+1}. ${p.zh}</b><br>${p.ko}<br>${p.en}<br><a href="${p.url}" target="_blank" rel="noopener">Naver Map ↗</a>`
+    ).addTo(layer);
+  });
+
+  layer.addTo(map);
+  dayLayers[d.id] = layer;
+});
+
+// fit map to all visible points initially
+const allPts = days.flatMap(d=>dayRoute(d).map(p=>[p.lat,p.lng]));
+if(allPts.length) map.fitBounds(allPts, {padding:[24,24]});
+
+// legend + toggles
+const legend = document.getElementById("mapLegend");
+legend.innerHTML = days.map(d=>`
+  <label>
+    <input type="checkbox" checked onchange="toggleDayLayer(${d.id}, this.checked)">
+    <span class="dot" style="background:${dayColors[d.id]}"></span>
+    <span class="lbl">Day ${d.id}</span>
+  </label>
+`).join("");
+
+function toggleDayLayer(id, on){
+  if(on) dayLayers[id].addTo(map);
+  else map.removeLayer(dayLayers[id]);
+}
+
+function toggleDay(id){
+  const card = document.getElementById("day-"+id);
+  const body = document.getElementById("body-"+id);
+  const willOpen = !card.classList.contains("open");
+  card.classList.toggle("open", willOpen);
+  card.querySelector(".day-head").setAttribute("aria-expanded", willOpen ? "true":"false");
+  body.style.maxHeight = willOpen ? body.scrollHeight + "px" : "0px";
+}
+
+days.forEach(d=>{
+  if(d.open){
+    const body = document.getElementById("body-"+d.id);
+    requestAnimationFrame(()=>{ body.style.maxHeight = body.scrollHeight + "px"; });
+  }
+});
+window.addEventListener("resize", ()=>{
+  days.forEach(d=>{
+    const card = document.getElementById("day-"+d.id);
+    if(card.classList.contains("open")){
+      const body = document.getElementById("body-"+d.id);
+      body.style.maxHeight = body.scrollHeight + "px";
+    }
+  });
+});
+
+requestAnimationFrame(()=>{
+  document.getElementById("gaugeFill").style.width = "100%";
+  document.getElementById("gaugeFill").style.background = "var(--coral)";
+});
+
+// ---------- pending checklist with persistence ----------
+const pendingItems = [
+  {id:"yacht-price", label:"廣安里共乘遊艇實際票價", desc:"已訂票但金額用估計值（70,000₩/2人），請提供實際收據金額校正預算"},
+  {id:"transport-mode", label:"多段公車／計程車路線決定交通方式", desc:"Day1、Day3有多段「公車或計程車」二選一，還沒定案，會影響時間和花費，出發前依體力和天氣決定即可"},
+  {id:"taejongdae-decide", label:"太宗台是否加入備選", desc:"Danubi小火車事故停駛中，復駛時間未定，目前僅列Day3備選，體力和時間允許再考慮"},
+  {id:"over-budget", label:"總預算已超出每人2萬台幣上限", desc:"目前約超出1,200-1,860元/人，需要決定要接受超支，還是刪減部分新增行程"},
+];
+
+async function loadChecklist(){
+  let state = {};
+  try{
+    const res = await window.storage.get("busan-trip-pending");
+    if(res && res.value) state = JSON.parse(res.value);
+  }catch(e){ /* no saved state yet, or storage unavailable */ }
+
+  const el = document.getElementById("checklist");
+  el.innerHTML = pendingItems.map(item=>`
+    <div class="check-item ${state[item.id]?'done':''}" id="item-${item.id}">
+      <input type="checkbox" id="cb-${item.id}" ${state[item.id]?'checked':''} onchange="toggleItem('${item.id}')">
+      <label for="cb-${item.id}">${item.label}<span class="desc">${item.desc}</span></label>
+    </div>
+  `).join("");
+}
+
+async function toggleItem(id){
+  const cb = document.getElementById("cb-"+id);
+  const row = document.getElementById("item-"+id);
+  row.classList.toggle("done", cb.checked);
+  try{
+    const res = await window.storage.get("busan-trip-pending");
+    let state = {};
+    if(res && res.value) state = JSON.parse(res.value);
+    state[id] = cb.checked;
+    await window.storage.set("busan-trip-pending", JSON.stringify(state));
+  }catch(e){ /* saving failed silently — checkbox still reflects local state */ }
+}
+
+loadChecklist();
+</script>
+</body>
+</html>
